@@ -28,12 +28,6 @@ import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import main.Herb;
-import main.Flower;
-import main.Fungus;
-import main.Plant;
-import main.Weed;
-
 public class FlowerPack extends JFrame {
 	DefaultListModel<Plant> listModel;
 	Plant plantToRemove;
@@ -41,7 +35,6 @@ public class FlowerPack extends JFrame {
 	JButton remove;
 	JFrame jframe;
 	Container cp;
-	String search;
 	Node start, tail, next;
 	Plant temp;
 
@@ -51,6 +44,7 @@ public class FlowerPack extends JFrame {
 
 	public FlowerPack() {
 
+		//Creating the interface
 		listModel = new DefaultListModel();
 		JList list = new JList(listModel);
 		list.addListSelectionListener(new MySelectionListener());
@@ -140,11 +134,12 @@ public class FlowerPack extends JFrame {
 	class MenuActionListener implements ActionListener {
 
 		@Override
+		//Saving the plants to a text file
 		public void actionPerformed(ActionEvent e) {
-			if (e.getActionCommand() == "Save") {
+			if (e.getActionCommand().equals("Save")) {
 				try {
 					File file = new File(
-							"C:/Users/akoontz2/Documents/Programming 2 Code/Plants.txt");
+							"D:/Portfolio/Java Projects/FlowerPack/Plants.txt");
 					FileOutputStream fileStream = new FileOutputStream(file);
 					PrintWriter pw = new PrintWriter(fileStream);
 
@@ -155,19 +150,17 @@ public class FlowerPack extends JFrame {
 					}
 					pw.close();
 				} catch (FileNotFoundException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-			} else if (e.getActionCommand() == "Load") {
-				// JOptionPane.showInputDialog("NO");
-				String trash, ID, name, color, hasSmell, hasThorn, isPoison, isEdible, isMedicinal, flavor, isSeason;
+			//Loading from the text file to app
+			} else if (e.getActionCommand().equals("Load")) {
+				String ID, name, color, hasSmell, hasThorn, isPoison, isEdible, isMedicinal, flavor, isSeason;
 				File file = new File(
-						"C:/Users/akoontz2/Documents/Programming 2 Code/Plants.txt");
+						"D:/Portfolio/Java Projects/FlowerPack/Plants.txt");
 				Scanner input = null;
 				try {
 					input = new Scanner(file);
 				} catch (FileNotFoundException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 
@@ -177,56 +170,56 @@ public class FlowerPack extends JFrame {
 					String s = input.nextLine();
 					StringTokenizer st = new StringTokenizer(s);
 
-					trash = st.nextToken();
-					trash = st.nextToken();
+					st.nextToken();
+					st.nextToken();
 					ID = st.nextToken();
-					trash = st.nextToken();
-					trash = st.nextToken();
+					st.nextToken();
+					st.nextToken();
 					name = st.nextToken();
-					trash = st.nextToken();
-					trash = st.nextToken();
+					st.nextToken();
+					st.nextToken();
 					color = st.nextToken();
 
 					switch (ID) {
 					case "1,":
-						trash = st.nextToken();
-						trash = st.nextToken();
+						st.nextToken();
+						st.nextToken();
 						hasThorn = st.nextToken();
-						trash = st.nextToken();
-						trash = st.nextToken();
+						st.nextToken();
+						st.nextToken();
 						hasSmell = st.nextToken();
 						tail.setNext(new Node(new Flower(ID, name, color,
 								hasThorn, hasSmell), null));
 						break;
 					case "2,":
-						trash = st.nextToken();
-						trash = st.nextToken();
+						st.nextToken();
+						st.nextToken();
 						isPoison = st.nextToken();
 						tail.setNext(new Node(new Fungus(ID, name, color,
 								isPoison), null));
 						break;
 					case "3,":
-						trash = st.nextToken();
-						trash = st.nextToken();
+						st.nextToken();
+						st.nextToken();
 						isPoison = st.nextToken();
-						trash = st.nextToken();
-						trash = st.nextToken();
+						st.nextToken();
+						st.nextToken();
 						isEdible = st.nextToken();
-						trash = st.nextToken();
-						trash = st.nextToken();
+						st.nextToken();
+						st.nextToken();
 						isMedicinal = st.nextToken();
 						tail.setNext(new Node(new Weed(ID, name, color,
 								isPoison, isEdible, isMedicinal), null));
 						break;
 					case "4,":
-						trash = st.nextToken();
-						trash = st.nextToken();
+						st.nextToken();
+						st.nextToken();
 						flavor = st.nextToken();
-						trash = st.nextToken();
-						trash = st.nextToken();
+						st.nextToken();
+						st.nextToken();
 						isMedicinal = st.nextToken();
-						trash = st.nextToken();
-						trash = st.nextToken();
+						st.nextToken();
+						st.nextToken();
 						isSeason = st.nextToken();
 						tail.setNext(new Node(new Herb(ID, name, color, flavor,
 								isMedicinal, isSeason), null));
@@ -246,97 +239,92 @@ public class FlowerPack extends JFrame {
 	}
 
 	class ButtonHandler implements ActionListener {
-		String ID;
-		String color;
-		String name;
-		String hasThorn;
-		String hasSmell;
-		String isPoison;
-		String isEdible;
-		String isMedicinal;
-		String isSeason;
-		String flavor;
+		String ID, color, name, hasThorn, hasSmell, isPoison, isEdible, isMedicinal, isSeason, flavor, search, filter;
 		int count;
 
 		@Override
+		//Listener for which button is pressed
 		public void actionPerformed(ActionEvent e) {
-
-			// JButton clicked = (JButton) e.getSource();
-			// String name = clicked.getText();
-
-			switch (e.getActionCommand()) {
-			case "Add Plant":
+			if (e.getActionCommand().equals("Add Plant"))
+			{
 				addPlant();
-				break;
-			case "Remove Plant":
+			} else if (e.getActionCommand().equals("Remove Plant"))
+			{
 				removePlant();
-				break;
-			case "Sort Plants":
+			} else if (e.getActionCommand().equals("Sort Plants"))
+			{
 				sortPlants();
-				break;
-			case "Filter Plants":
+			} else if (e.getActionCommand().equals("Filter Plants"))
+			{
 				filterPlants();
-				break;
-			case "Analyze":
+			} else if (e.getActionCommand().equals("Analyze"))
+			{
+				count = 0;
 				search = JOptionPane
 						.showInputDialog("What do you want to search for?");
-				count = 0;
-				analyzePlants(name, count);
-				JOptionPane.showMessageDialog(cp, name + " has " + search + " "
-						+ count + " time(s) in it.");
-				// listModel.add(name + count);
-				break;
-			case "Close":
+				if (search != null) {
+					count = analyzePlants(name, count);
+					JOptionPane.showMessageDialog(cp, name + " has " + search + " "
+							+ count + " time(s) in it.");
+				}
+			} else if (e.getActionCommand().equals("Close"))
+			{
 				System.exit(0);
-				break;
 			}
-			if (e.getActionCommand() == "Red") {
+
+			//Changing background color
+			if (e.getActionCommand().equals("Red")) {
 				cp.setBackground(Color.RED);
-			} else if (e.getActionCommand() == "Green") {
+			} else if (e.getActionCommand().equals("Green")) {
 				cp.setBackground(Color.GREEN);
-			} else if (e.getActionCommand() == "Blue") {
+			} else if (e.getActionCommand().equals("Blue")) {
 				cp.setBackground(Color.BLUE);
-			} else if (e.getActionCommand() == "Black") {
+			} else if (e.getActionCommand().equals("Black")) {
 				cp.setBackground(Color.BLACK);
-			} else if (e.getActionCommand() == "Gray") {
+			} else if (e.getActionCommand().equals("Gray")) {
 				cp.setBackground(Color.GRAY);
 			}
-
 		}
 
+		//Counts how many times the input is found in the name of the plant
 		public int analyzePlants(String name, int count) {
-			if (!name.contains(search)) {
-				this.count = count;
+			if (name.length() < 1)
+			{
 				return count;
-				// System.out.println(count);
 			}
-			if (name.startsWith(search)) {
+			if (name.startsWith(search)){
 				count++;
+			} else {
+				return analyzePlants(name.substring(1), count);
 			}
 			return analyzePlants(name.substring(1), count);
 		}
 
+		//Searches for a specific plant by name
 		private void filterPlants() {
-			String filter = JOptionPane
+			filter = JOptionPane
 					.showInputDialog("What would you like to filter?");
-			Node p;
-			p = start;
-			while (p != null) {
-				String name = p.getItem().getName();
-				if (name.contains(filter)) {
-					break;
+			if (filter != null) {
+				Node p;
+				p = start;
+				while (p != null) {
+					String name = p.getItem().getName();
+					if (name.contains(filter)) {
+						break;
+					}
+					p = p.getNext();
 				}
-				p = p.getNext();
-			}
-			if (p != null) {
-				JOptionPane.showMessageDialog(cp, "We have found that plant!\n"
-						+ p.getItem());
-			} else {
-				JOptionPane
-						.showMessageDialog(cp, "We did not find that plant.");
+				if (p != null) {
+					JOptionPane.showMessageDialog(cp, "We have found that plant!\n"
+							+ p.getItem());
+				} else {
+					JOptionPane
+							.showMessageDialog(cp, "We did not find that plant.");
+				}
 			}
 		}
 
+		//Sorts plants by name
 		private void sortPlants() {
 			boolean swapped = true;
 			Plant temp;
@@ -358,7 +346,6 @@ public class FlowerPack extends JFrame {
 			}
 
 			listModel.clear();
-			// listModel.addElement(start.getItem());
 			p = start;
 			while (p != null) {
 				listModel.addElement(p.getItem());
@@ -366,6 +353,7 @@ public class FlowerPack extends JFrame {
 			}
 		}
 
+		//Removes the selected plant from the list
 		private void removePlant() {
 			Node prev, del;
 			del = start;
@@ -391,6 +379,7 @@ public class FlowerPack extends JFrame {
 			listModel.removeElement(plantToRemove);
 		}
 
+		//Adds a plant to the list
 		private void addPlant() {
 			start = new Node(null, null);
 			tail = start;
@@ -398,17 +387,17 @@ public class FlowerPack extends JFrame {
 				int type = Integer
 						.parseInt(JOptionPane
 								.showInputDialog("Type of Plant\n1: Flower\n2: Fungus\n3: Weed\n4: Herb\n5: Exit"));
-				if (type == 5) {
-					break;
-				} else{
-					JOptionPane.showMessageDialog(cp,
-							"That is not a valid input");
-				}
-				if (type >= 1 && type <= 5) {
-					ID = JOptionPane.showInputDialog("ID");
-					name = JOptionPane.showInputDialog("Name");
-					color = JOptionPane.showInputDialog("Color");
-				}
+					if (type == 5) {
+						break;
+					} else if (type >= 1 && type <= 5) {
+						ID = JOptionPane.showInputDialog("ID");
+						name = JOptionPane.showInputDialog("Name");
+						color = JOptionPane.showInputDialog("Color");
+					} else {
+						JOptionPane.showMessageDialog(cp,
+								"That is not a valid input");
+					}
+
 				switch (type) {
 				case 1:
 					hasThorn = JOptionPane
